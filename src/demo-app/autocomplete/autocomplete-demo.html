@@ -1,0 +1,8 @@
+{{model}}
+<input [(ngModel)]="model" [md-autocomplete-trigger-for]="try"/>
+<button (click)="model = 'e'">e</button>
+<md-autocomplete #try="mdAutocomplete">
+  <md-autocomplete-item *ngFor="let item of data" [value]="item">
+    <span>{{item}}</span>
+  </md-autocomplete-item>
+</md-autocomplete>

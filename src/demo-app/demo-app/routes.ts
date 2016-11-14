@@ -1,5 +1,6 @@
 import {Routes} from '@angular/router';
 import {Home} from './demo-app';
+import {AutocompleteDemo} from '../autocomplete/autocomplete-demo';
 import {ButtonDemo} from '../button/button-demo';
 import {BaselineDemo} from '../baseline/baseline-demo';
 import {ButtonToggleDemo} from '../button-toggle/button-toggle-demo';
@@ -31,6 +32,7 @@ import {TABS_DEMO_ROUTES} from '../tabs/routes';
 
 export const DEMO_APP_ROUTES: Routes = [
   {path: '', component: Home},
+  {path: 'autocomplete', component: AutocompleteDemo},
   {path: 'button', component: ButtonDemo},
   {path: 'card', component: CardDemo},
   {path: 'radio', component: RadioDemo},

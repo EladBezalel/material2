@@ -9,6 +9,7 @@ import {
   StyleCompatibilityModule,
 } from './core/index';
 
+import {MdAutocompleteModule} from './autocomplete/index'
 import {MdButtonToggleModule} from './button-toggle/index';
 import {MdButtonModule} from './button/index';
 import {MdCheckboxModule} from './checkbox/index';
@@ -33,6 +34,7 @@ import {MdDialogModule} from './dialog/index';
 
 
 const MATERIAL_MODULES = [
+  MdAutocompleteModule,
   MdButtonModule,
   MdButtonToggleModule,
   MdCardModule,
@@ -64,6 +66,7 @@ const MATERIAL_MODULES = [
 
 @NgModule({
   imports: [
+    MdAutocompleteModule.forRoot(),
     MdButtonModule.forRoot(),
     MdCardModule.forRoot(),
     MdCheckboxModule.forRoot(),

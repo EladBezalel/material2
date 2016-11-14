@@ -6,6 +6,7 @@ import {DemoApp, Home} from './demo-app/demo-app';
 import {RouterModule} from '@angular/router';
 import {MaterialModule} from '@angular/material';
 import {DEMO_APP_ROUTES} from './demo-app/routes';
+import {AutocompleteDemo} from './autocomplete/autocomplete-demo'
 import {ProgressBarDemo} from './progress-bar/progress-bar-demo';
 import {JazzDialog, DialogDemo} from './dialog/dialog-demo';
 import {RippleDemo} from './ripple/ripple-demo';
@@ -44,6 +45,7 @@ import {TabsDemo, SunnyTabContent, RainyTabContent, FoggyTabContent} from './tab
     MaterialModule.forRoot(),
   ],
   declarations: [
+    AutocompleteDemo,
     BaselineDemo,
     ButtonDemo,
     ButtonToggleDemo,
