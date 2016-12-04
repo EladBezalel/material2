@@ -3,6 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {HttpModule} from '@angular/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DemoApp, Home} from './demo-app/demo-app';
+import {Example} from './example/example';
 import {RouterModule} from '@angular/router';
 import {MaterialModule} from '@angular/material';
 import {DEMO_APP_ROUTES} from './demo-app/routes';
@@ -36,6 +37,7 @@ import {MenuDemo} from './menu/menu-demo';
 import {TabsDemo, SunnyTabContent, RainyTabContent, FoggyTabContent} from './tabs/tabs-demo';
 import {ProjectionDemo, ProjectionTestComponent} from './projection/projection-demo';
 import {PlatformDemo} from './platform/platform-demo';
+import {ExpansionPanelDemo} from './expansion-panel/expansion-panel-demo';
 
 @NgModule({
   imports: [
@@ -54,6 +56,8 @@ import {PlatformDemo} from './platform/platform-demo';
     ChipsDemo,
     CheckboxDemo,
     DemoApp,
+    Example,
+    ExpansionPanelDemo,
     DialogDemo,
     GesturesDemo,
     GridListDemo,

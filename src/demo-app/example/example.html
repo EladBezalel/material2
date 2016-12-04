@@ -1,0 +1,18 @@
+<md-card>
+  <md-toolbar>
+    <div class="example-toolbar">
+      <span>{{demo.title}} Demo</span>
+      <button md-icon-button [md-expansion-panel-trigger-for]="panel">
+        <md-icon>code</md-icon>
+      </button>
+    </div>
+  </md-toolbar>
+  <md-expansion-panel #panel>
+    <md-tab-group>
+      <md-tab label="HTML">html</md-tab>
+    </md-tab-group>
+  </md-expansion-panel>
+  <md-card-content>
+    <ng-content></ng-content>
+  </md-card-content>
+</md-card>

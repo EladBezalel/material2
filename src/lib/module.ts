@@ -33,6 +33,7 @@ import {MdTooltipModule} from './tooltip/index';
 import {MdMenuModule} from './menu/index';
 import {MdDialogModule} from './dialog/index';
 import {PlatformModule} from './core/platform/platform';
+import {MdExpansionPanelModule} from './expansion-panel/index';
 
 
 const MATERIAL_MODULES = [
@@ -66,6 +67,7 @@ const MATERIAL_MODULES = [
   PlatformModule,
   ProjectionModule,
   DefaultStyleCompatibilityModeModule,
+  MdExpansionPanelModule
 ];
 
 @NgModule({
@@ -87,6 +89,7 @@ const MATERIAL_MODULES = [
     PortalModule.forRoot(),
     ProjectionModule.forRoot(),
     RtlModule.forRoot(),
+    MdExpansionPanelModule.forRoot(),
 
     // These modules include providers.
     A11yModule.forRoot(),

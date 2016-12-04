@@ -1,104 +1,216 @@
-<div class="demo-button">
-  <section>
-    <button md-button>flat</button>
-    <button md-raised-button>raised</button>
-    <button md-fab>
-      <md-icon class="md-24">check</md-icon>
-    </button>
-    <button md-mini-fab>
-      <md-icon class="md-24">check</md-icon>
-    </button>
-  </section>
+<md-tab-group color="primary">
+  <md-tab label="BASIC">
+    <div class="demo-tab">
+      <p>
+        <code>md-button</code> is an HTML <code>&lt;button&gt;</code> or <code>&lt;a&gt;</code> tag enhanced
+        with styling and animation to match the spec of the <a>Material Design button spec</a>
+      </p>
 
-  <section>
-    <a href="http://www.google.com" md-button color="primary">SEARCH</a>
-    <a href="http://www.google.com" md-raised-button>SEARCH</a>
-    <a href="http://www.google.com" md-fab>
-      <md-icon class="md-24">check</md-icon>
-    </a>
-    <a href="http://www.google.com" md-mini-fab>
-      <md-icon class="md-24">check</md-icon>
-    </a>
-  </section>
+      <example [demo]="{title: 'Basic'}">
+        <div class="demo-button">
+          <section>
+            <button md-button>flat</button>
+            <button md-raised-button>raised</button>
+            <button md-fab>
+              <md-icon class="md-24">check</md-icon>
+            </button>
+            <button md-mini-fab>
+              <md-icon class="md-24">check</md-icon>
+            </button>
+          </section>
+        </div>
+      </example>
 
-  <section>
-    <button md-button color="primary">primary</button>
-    <button md-button color="accent">accent</button>
-    <button md-button color="warn">warn</button>
-  </section>
+      <h2>Theming</h2>
+      <p>
+        All button types can be themed to match you "primary" palette, your "accent" palette, or your "warn" palette
+        using
+        the <code>color</code> attribute.
 
-  <section>
-    <button md-raised-button color="primary">primary</button>
-    <button md-raised-button color="accent">accent</button>
-    <button md-raised-button color="warn">warn</button>
-  </section>
+        Simply pass in the template name.
+      </p>
+      <p>
+        In flat button the palette chosen will affect the text color, while in other buttons, it affects the
+        background.
+      </p>
 
-  <section>
-    <button md-fab color="primary">
-      <md-icon class="md-24">home</md-icon>
-    </button>
-    <button md-fab color="accent">
-      <md-icon class="md-24">favorite</md-icon>
-    </button>
-    <button md-fab color="warn">
-      <md-icon class="md-24">feedback</md-icon>
-    </button>
-  </section>
+      <example [demo]="{title: 'Theming'}">
+        <div class="demo-button">
+          <section>
+            <button md-button color="primary">primary</button>
+            <button md-button color="accent">accent</button>
+            <button md-button color="warn">warn</button>
+          </section>
 
-  <section>
-    <button md-icon-button color="primary">
-      <md-icon class="md-24">menu</md-icon>
-    </button>
+          <section>
+            <button md-raised-button color="primary">primary</button>
+            <button md-raised-button color="accent">accent</button>
+            <button md-raised-button color="warn">warn</button>
+          </section>
 
-    <button md-icon-button color="accent">
-      <md-icon class="md-24">favorite</md-icon>
-    </button>
+          <section>
+            <button md-fab color="primary">
+              <md-icon class="md-24">home</md-icon>
+            </button>
+            <button md-fab color="accent">
+              <md-icon class="md-24">favorite</md-icon>
+            </button>
+            <button md-fab color="warn">
+              <md-icon class="md-24">feedback</md-icon>
+            </button>
+          </section>
 
-    <button md-icon-button>
-      <md-icon class="md-24">more_vert</md-icon>
-    </button>
-  </section>
+          <section>
+            <button md-icon-button color="primary">
+              <md-icon class="md-24">menu</md-icon>
+            </button>
 
-  <section>
-    <div>
-      <p>isDisabled: {{isDisabled}}, clickCounter: <span>{{clickCounter}}</span></p>
-      <button md-raised-button (click)="isDisabled=!isDisabled">
-        Disable buttons
-      </button>
-      <button md-raised-button (click)="button1.focus()">Focus 1</button>
-      <button md-raised-button (click)="button2.focus()">Focus 2</button>
-      <button md-raised-button (click)="button3.focus()">Focus 3</button>
+            <button md-icon-button color="accent">
+              <md-icon class="md-24">favorite</md-icon>
+            </button>
+
+            <button md-icon-button>
+              <md-icon class="md-24">more_vert</md-icon>
+            </button>
+          </section>
+        </div>
+      </example>
+
+      <h2>Accessibility</h2>
+      <p>
+        In high contrast mode, a strong border is added to the button to make it easier to see.
+      </p>
+      <p>
+        Button focus events originating from the keyboard wil retain focus styles, while button focus events from mouse
+        will not.
+      </p>
+      <p>
+        As <code>md-button</code> is added to an existing button or tag, it enjoys all the accessibility natively built
+        into these elements.
+      </p>
     </div>
-    <button md-button #button1 [disabled]="isDisabled" (click)="clickCounter=clickCounter+1">off</button>
-    <button md-button color="primary" [disabled]="isDisabled">off</button>
-    <a href="http://www.google.com" #button2 md-button color="accent" [disabled]="isDisabled">off</a>
-    <button md-raised-button #button3 color="primary" [disabled]="isDisabled">off</button>
-    <button md-mini-fab [disabled]="isDisabled">
-      <md-icon class="md-24">check</md-icon>
-    </button>
+  </md-tab>
+  <md-tab label="API">
+    <div class="demo-button">
+      <section>
+        <button md-button>flat</button>
+        <button md-raised-button>raised</button>
+        <button md-fab>
+          <md-icon class="md-24">check</md-icon>
+        </button>
+        <button md-mini-fab>
+          <md-icon class="md-24">check</md-icon>
+        </button>
+      </section>
 
-    <button md-icon-button color="accent" [disabled]="isDisabled">
-      <md-icon class="md-24">favorite</md-icon>
-    </button>
-  </section>
-  <section>
-    <a href="http://www.google.com" md-button color="primary">SEARCH</a>
-    <button md-button>DANCE</button>
-  </section>
-  <section>
-    <a href="http://www.google.com" md-raised-button color="primary">SEARCH</a>
-    <button md-raised-button>DANCE</button>
-  </section>
-  <section>
-    <button md-raised-button>More<md-icon>more_vert</md-icon></button>
-    <button md-raised-button>Check<md-icon>check</md-icon></button>
-    <button md-raised-button>Check<md-icon class="md-24">favorite</md-icon></button>
-    <button md-raised-button>Last<md-icon>navigate_before</md-icon></button>
-  </section>
-  <section>
-    <button md-button>More<md-icon>more_vert</md-icon></button>
-    <button md-button>Check<md-icon>check</md-icon></button>
-    <button md-button>Check<md-icon class="md-24">favorite</md-icon></button>
-    <button md-button>Last<md-icon>navigate_before</md-icon></button>
-  </section>
-</div>
+      <section>
+        <a href="http://www.google.com" md-button color="primary">SEARCH</a>
+        <a href="http://www.google.com" md-raised-button>SEARCH</a>
+        <a href="http://www.google.com" md-fab>
+          <md-icon class="md-24">check</md-icon>
+        </a>
+        <a href="http://www.google.com" md-mini-fab>
+          <md-icon class="md-24">check</md-icon>
+        </a>
+      </section>
+
+      <section>
+        <button md-button color="primary">primary</button>
+        <button md-button color="accent">accent</button>
+        <button md-button color="warn">warn</button>
+      </section>
+
+      <section>
+        <button md-raised-button color="primary">primary</button>
+        <button md-raised-button color="accent">accent</button>
+        <button md-raised-button color="warn">warn</button>
+      </section>
+
+      <section>
+        <button md-fab color="primary">
+          <md-icon class="md-24">home</md-icon>
+        </button>
+        <button md-fab color="accent">
+          <md-icon class="md-24">favorite</md-icon>
+        </button>
+        <button md-fab color="warn">
+          <md-icon class="md-24">feedback</md-icon>
+        </button>
+      </section>
+
+      <section>
+        <button md-icon-button color="primary">
+          <md-icon class="md-24">menu</md-icon>
+        </button>
+
+        <button md-icon-button color="accent">
+          <md-icon class="md-24">favorite</md-icon>
+        </button>
+
+        <button md-icon-button>
+          <md-icon class="md-24">more_vert</md-icon>
+        </button>
+      </section>
+
+      <section>
+        <div>
+          <p>isDisabled: {{isDisabled}}, clickCounter: <span>{{clickCounter}}</span></p>
+          <button md-raised-button (click)="isDisabled=!isDisabled">
+            Disable buttons
+          </button>
+          <button md-raised-button (click)="button1.focus()">Focus 1</button>
+          <button md-raised-button (click)="button2.focus()">Focus 2</button>
+          <button md-raised-button (click)="button3.focus()">Focus 3</button>
+        </div>
+        <button md-button #button1 [disabled]="isDisabled" (click)="clickCounter=clickCounter+1">off</button>
+        <button md-button color="primary" [disabled]="isDisabled">off</button>
+        <a href="http://www.google.com" #button2 md-button color="accent" [disabled]="isDisabled">off</a>
+        <button md-raised-button #button3 color="primary" [disabled]="isDisabled">off</button>
+        <button md-mini-fab [disabled]="isDisabled">
+          <md-icon class="md-24">check</md-icon>
+        </button>
+
+        <button md-icon-button color="accent" [disabled]="isDisabled">
+          <md-icon class="md-24">favorite</md-icon>
+        </button>
+      </section>
+      <section>
+        <a href="http://www.google.com" md-button color="primary">SEARCH</a>
+        <button md-button>DANCE</button>
+      </section>
+      <section>
+        <a href="http://www.google.com" md-raised-button color="primary">SEARCH</a>
+        <button md-raised-button>DANCE</button>
+      </section>
+      <section>
+        <button md-raised-button>More
+          <md-icon>more_vert</md-icon>
+        </button>
+        <button md-raised-button>Check
+          <md-icon>check</md-icon>
+        </button>
+        <button md-raised-button>Check
+          <md-icon class="md-24">favorite</md-icon>
+        </button>
+        <button md-raised-button>Last
+          <md-icon>navigate_before</md-icon>
+        </button>
+      </section>
+      <section>
+        <button md-button>More
+          <md-icon>more_vert</md-icon>
+        </button>
+        <button md-button>Check
+          <md-icon>check</md-icon>
+        </button>
+        <button md-button>Check
+          <md-icon class="md-24">favorite</md-icon>
+        </button>
+        <button md-button>Last
+          <md-icon>navigate_before</md-icon>
+        </button>
+      </section>
+    </div>
+  </md-tab>
+  <md-tab label="ADVANCED"></md-tab>
+</md-tab-group>

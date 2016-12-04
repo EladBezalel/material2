@@ -1,0 +1,17 @@
+:host {
+  md-card {
+    padding: 0;
+
+    .example-toolbar {
+      display: flex;
+      flex: 1;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    md-card-content {
+      padding: 8px;
+    }
+  }
+}

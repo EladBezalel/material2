@@ -17,18 +17,42 @@ body {
       bottom: 0;
       margin: 24px 0;
     }
+
+    .category .md-list-item {
+      background-color: rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .expand {
+      transform: rotate(0deg);
+      transition: all .3s ease;
+    }
+    .expand.is-opened {
+      transform: rotate(180deg);
+    }
   }
 
   .demo-content {
     padding: 32px;
+
+    > md-card {
+      padding: 0;
+
+      md-tab-body {
+        padding: 24px;
+      }
+    }
   }
 
-  md-toolbar {
+  .demo-toolbar {
+    height: 128px;
     md-icon {
       cursor: pointer;
     }
 
-    .demo-toolbar {
+    .demo-toolbar-content {
       display: flex;
       justify-content: space-between;
       width: 100%;
@@ -37,5 +61,16 @@ body {
 
   h1 {
     font-size: 20px;
+  }
+
+  code {
+    color: #106CC8;
+    margin-left: 1px;
+    margin-right: 1px;
+    -webkit-font-smoothing: auto;
+    padding: 0.125em 0.35em;
+    border-radius: 2px;
+    font-size: 1.4rem;
+    background: rgba(0, 0, 0, 0.065);
   }
 }
