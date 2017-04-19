@@ -48,9 +48,9 @@
 
 <md-card class="demo-card demo-basic">
   <md-toolbar color="primary">Inputs</md-toolbar>
-  <md-card-content>
+  <md-card-content [style.font-size]="fontsize.value + 'px'">
     <md-input-container>
-      <input mdInput placeholder="Input" value="Text Input">
+      <input mdInput placeholder="Font Size" value="16" #fontsize type="number">
     </md-input-container>
     <md-select placeholder="Select">
       <md-option>1</md-option>

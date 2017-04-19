@@ -40,25 +40,11 @@ import 'rxjs/add/operator/startWith';
  * the trigger element.
  */
 
-/** The fixed height of every option element. */
-export const SELECT_OPTION_HEIGHT = 48;
-
 /** The max height of the select's overlay panel */
 export const SELECT_PANEL_MAX_HEIGHT = 256;
 
 /** The max number of options visible at once in the select panel. */
 export const SELECT_MAX_OPTIONS_DISPLAYED = 5;
-
-/** The fixed height of the select's trigger element. */
-export const SELECT_TRIGGER_HEIGHT = 21;
-
-/**
- * Must adjust for the difference in height between the option and the trigger,
- * so the text will align on the y axis.
- * (SELECT_OPTION_HEIGHT (48) - SELECT_TRIGGER_HEIGHT (21)) / 2 = 13.5
- */
-export const SELECT_OPTION_HEIGHT_ADJUSTMENT =
-  (SELECT_OPTION_HEIGHT - SELECT_TRIGGER_HEIGHT) / 2;
 
 /** The panel's padding on the x-axis */
 export const SELECT_PANEL_PADDING_X = 16;
@@ -80,6 +66,7 @@ export const SELECT_MULTIPLE_PANEL_PADDING_X = SELECT_PANEL_PADDING_X * 1.75 + 2
  */
 export const SELECT_PANEL_PADDING_Y = 16;
 
+export const SELECT_PANEL_WHATEVER_PADDING = 13.5;
 /**
  * The select panel will only "fit" inside the viewport if it is positioned at
  * this value or more away from the viewport boundary.
@@ -178,6 +165,9 @@ export class MdSelect implements AfterContentInit, OnDestroy, OnInit, ControlVal
 
   /** The value of the select panel's transform-origin property. */
   _transformOrigin: string = 'top';
+
+  /** */
+  _fontSize: string = '';
 
   /** Whether the panel's animation is done. */
   _panelDoneAnimating: boolean = false;
@@ -348,11 +338,20 @@ export class MdSelect implements AfterContentInit, OnDestroy, OnInit, ControlVal
       return;
     }
 
+    let wrapper = this.trigger.nativeElement.querySelector('.mat-select-value-wrapper');
+    const triggerStyles = getComputedStyle(wrapper);
+
+    console.log(triggerStyles.height);
+    this._fontSize = triggerStyles.fontSize;
+
     if (!this._triggerWidth) {
       this._setTriggerWidth();
     }
 
-    this._calculateOverlayPosition();
+    const triggerHeight = parseInt(triggerStyles.height);
+    const optionHeight = triggerHeight + 2 * SELECT_PANEL_WHATEVER_PADDING;
+
+    this._calculateOverlayPosition(triggerHeight, optionHeight);
     this._placeholderState = this._floatPlaceholderState();
     this._panelOpen = true;
   }
@@ -680,7 +679,7 @@ export class MdSelect implements AfterContentInit, OnDestroy, OnInit, ControlVal
   }
 
   /** Calculates the scroll position and x- and y-offsets of the overlay panel. */
-  private _calculateOverlayPosition(): void {
+  private _calculateOverlayPosition(triggerHeight: number, optionHeight: number): void {
     this._offsetX = this.multiple ? SELECT_MULTIPLE_PANEL_PADDING_X : SELECT_PANEL_PADDING_X;
 
     if (!this._isRtl()) {
@@ -688,8 +687,8 @@ export class MdSelect implements AfterContentInit, OnDestroy, OnInit, ControlVal
     }
 
     const panelHeight =
-        Math.min(this.options.length * SELECT_OPTION_HEIGHT, SELECT_PANEL_MAX_HEIGHT);
-    const scrollContainerHeight = this.options.length * SELECT_OPTION_HEIGHT;
+        Math.min(this.options.length * optionHeight, SELECT_PANEL_MAX_HEIGHT);
+    const scrollContainerHeight = this.options.length * optionHeight;
 
     // The farthest the panel can be scrolled before it hits the bottom
     const maxScroll = scrollContainerHeight - panelHeight;
@@ -699,17 +698,23 @@ export class MdSelect implements AfterContentInit, OnDestroy, OnInit, ControlVal
       // We must maintain a scroll buffer so the selected option will be scrolled to the
       // center of the overlay panel rather than the top.
       const scrollBuffer = panelHeight / 2;
-      this._scrollTop = this._calculateOverlayScroll(selectedIndex, scrollBuffer, maxScroll);
-      this._offsetY = this._calculateOverlayOffset(selectedIndex, scrollBuffer, maxScroll);
+      this._scrollTop =
+        this._calculateOverlayScroll(selectedIndex, scrollBuffer, maxScroll, optionHeight);
+      this._offsetY =
+        this._calculateOverlayOffset(selectedIndex,
+                                     scrollBuffer,
+                                     maxScroll,
+                                     triggerHeight,
+                                     optionHeight);
     } else {
       // If no option is selected, the panel centers on the first option. In this case,
       // we must only adjust for the height difference between the option element
       // and the trigger element, then multiply it by -1 to ensure the panel moves
       // in the correct direction up the page.
-      this._offsetY = SELECT_OPTION_HEIGHT_ADJUSTMENT * -1;
+      this._offsetY = (optionHeight - triggerHeight) / 2 * -1;
     }
 
-    this._checkOverlayWithinViewport(maxScroll);
+    this._checkOverlayWithinViewport(maxScroll, triggerHeight, optionHeight);
   }
 
   /**
@@ -720,9 +725,9 @@ export class MdSelect implements AfterContentInit, OnDestroy, OnInit, ControlVal
    * scroll position to the min or max scroll positions respectively.
    */
   _calculateOverlayScroll(selectedIndex: number, scrollBuffer: number,
-                          maxScroll: number): number {
-    const optionOffsetFromScrollTop = SELECT_OPTION_HEIGHT * selectedIndex;
-    const halfOptionHeight = SELECT_OPTION_HEIGHT / 2;
+                          maxScroll: number, optionHeight: number): number {
+    const optionOffsetFromScrollTop = optionHeight * selectedIndex;
+    const halfOptionHeight = optionHeight / 2;
 
     // Starts at the optionOffsetFromScrollTop, which scrolls the option to the top of the
     // scroll container, then subtracts the scroll buffer to scroll the option down to
@@ -768,11 +773,11 @@ export class MdSelect implements AfterContentInit, OnDestroy, OnInit, ControlVal
    * selected option to be aligned over the trigger when the panel opens.
    */
   private _calculateOverlayOffset(selectedIndex: number, scrollBuffer: number,
-                                  maxScroll: number): number {
+                                  maxScroll: number, triggerHeight: number, optionHeight): number {
     let optionOffsetFromPanelTop: number;
 
     if (this._scrollTop === 0) {
-      optionOffsetFromPanelTop = selectedIndex * SELECT_OPTION_HEIGHT;
+      optionOffsetFromPanelTop = selectedIndex * optionHeight;
     } else if (this._scrollTop === maxScroll) {
       const firstDisplayedIndex = this.options.length - SELECT_MAX_OPTIONS_DISPLAYED;
       const selectedDisplayIndex = selectedIndex - firstDisplayedIndex;
@@ -782,18 +787,18 @@ export class MdSelect implements AfterContentInit, OnDestroy, OnInit, ControlVal
       // scrolled to the very bottom, this padding is at the top of the panel and
       // must be added to the offset.
       optionOffsetFromPanelTop =
-          selectedDisplayIndex * SELECT_OPTION_HEIGHT + SELECT_PANEL_PADDING_Y;
+          selectedDisplayIndex * optionHeight + SELECT_PANEL_PADDING_Y;
     } else {
       // If the option was scrolled to the middle of the panel using a scroll buffer,
       // its offset will be the scroll buffer minus the half height that was added to
       // center it.
-      optionOffsetFromPanelTop = scrollBuffer - SELECT_OPTION_HEIGHT / 2;
+      optionOffsetFromPanelTop = scrollBuffer - optionHeight / 2;
     }
 
     // The final offset is the option's offset from the top, adjusted for the height
     // difference, multiplied by -1 to ensure that the overlay moves in the correct
     // direction up the page.
-    return optionOffsetFromPanelTop * -1 - SELECT_OPTION_HEIGHT_ADJUSTMENT;
+    return optionOffsetFromPanelTop * -1 - (optionHeight - triggerHeight) / 2;
   }
 
   /**
@@ -802,7 +807,9 @@ export class MdSelect implements AfterContentInit, OnDestroy, OnInit, ControlVal
    * y-offset so the panel can open fully on-screen. If it still won't fit,
    * sets the offset back to 0 to allow the fallback position to take over.
    */
-  private _checkOverlayWithinViewport(maxScroll: number): void {
+  private _checkOverlayWithinViewport(maxScroll: number,
+                                      triggerHeight: number,
+                                      optionHeight: number): void {
     const viewportRect = this._viewportRuler.getViewportRect();
     const triggerRect = this._getTriggerRect();
 
@@ -812,27 +819,32 @@ export class MdSelect implements AfterContentInit, OnDestroy, OnInit, ControlVal
 
     const panelHeightTop = Math.abs(this._offsetY);
     const totalPanelHeight =
-        Math.min(this.options.length * SELECT_OPTION_HEIGHT, SELECT_PANEL_MAX_HEIGHT);
+        Math.min(this.options.length * optionHeight, SELECT_PANEL_MAX_HEIGHT);
     const panelHeightBottom = totalPanelHeight - panelHeightTop - triggerRect.height;
 
     if (panelHeightBottom > bottomSpaceAvailable) {
-      this._adjustPanelUp(panelHeightBottom, bottomSpaceAvailable);
+      this._adjustPanelUp(panelHeightBottom, bottomSpaceAvailable, triggerHeight, optionHeight);
     } else if (panelHeightTop > topSpaceAvailable) {
-     this._adjustPanelDown(panelHeightTop, topSpaceAvailable, maxScroll);
+     this._adjustPanelDown(panelHeightTop,
+                           topSpaceAvailable,
+                           maxScroll,
+                           triggerHeight,
+                           optionHeight);
     } else {
-      this._transformOrigin = this._getOriginBasedOnOption();
+      this._transformOrigin = this._getOriginBasedOnOption(triggerHeight, optionHeight);
     }
   }
 
   /** Adjusts the overlay panel up to fit in the viewport. */
-  private _adjustPanelUp(panelHeightBottom: number, bottomSpaceAvailable: number) {
+  private _adjustPanelUp(panelHeightBottom: number, bottomSpaceAvailable: number,
+                         triggerHeight: number, optionHeight: number) {
     const distanceBelowViewport = panelHeightBottom - bottomSpaceAvailable;
 
     // Scrolls the panel up by the distance it was extending past the boundary, then
     // adjusts the offset by that amount to move the panel up into the viewport.
     this._scrollTop -= distanceBelowViewport;
     this._offsetY -= distanceBelowViewport;
-    this._transformOrigin = this._getOriginBasedOnOption();
+    this._transformOrigin = this._getOriginBasedOnOption(triggerHeight, optionHeight);
 
     // If the panel is scrolled to the very top, it won't be able to fit the panel
     // by scrolling, so set the offset to 0 to allow the fallback position to take
@@ -846,14 +858,14 @@ export class MdSelect implements AfterContentInit, OnDestroy, OnInit, ControlVal
 
   /** Adjusts the overlay panel down to fit in the viewport. */
   private _adjustPanelDown(panelHeightTop: number, topSpaceAvailable: number,
-                           maxScroll: number) {
+                           maxScroll: number, triggerHeight: number, optionHeight: number) {
     const distanceAboveViewport = panelHeightTop - topSpaceAvailable;
 
     // Scrolls the panel down by the distance it was extending past the boundary, then
     // adjusts the offset by that amount to move the panel down into the viewport.
     this._scrollTop += distanceAboveViewport;
     this._offsetY += distanceAboveViewport;
-    this._transformOrigin = this._getOriginBasedOnOption();
+    this._transformOrigin = this._getOriginBasedOnOption(triggerHeight, optionHeight);
 
     // If the panel is scrolled to the very bottom, it won't be able to fit the
     // panel by scrolling, so set the offset to 0 to allow the fallback position
@@ -867,9 +879,9 @@ export class MdSelect implements AfterContentInit, OnDestroy, OnInit, ControlVal
   }
 
   /** Sets the transform origin point based on the selected option. */
-  private _getOriginBasedOnOption(): string {
+  private _getOriginBasedOnOption(triggerHeight: number, optionHeight: number): string {
     const originY =
-        Math.abs(this._offsetY) - SELECT_OPTION_HEIGHT_ADJUSTMENT + SELECT_OPTION_HEIGHT / 2;
+        Math.abs(this._offsetY) - (optionHeight - triggerHeight / 2) ;
     return `50% ${Math.ceil(originY)}px 0px`;
   }
 
